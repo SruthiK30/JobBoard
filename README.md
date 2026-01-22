@@ -66,7 +66,7 @@ JobBoard/
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git clone https://github.com/SruthiK30/JobBoard
 cd JobBoard
 ````
 
@@ -96,7 +96,7 @@ Add the following variables (replace with your MongoDB credentials):
 
 ```
 MONGO_URI=your_mongodb_connection_string
-PORT=5000
+PORT=4000
 ```
 
 > Example MongoDB Atlas URI:
@@ -115,7 +115,7 @@ Expected output:
 
 ```
 MongoDB connected
-Backend running on http://localhost:5000
+Backend running on http://localhost:4000
 ```
 
 ---
