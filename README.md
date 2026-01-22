@@ -13,21 +13,6 @@ This project demonstrates a complete job posting platform with a clean separatio
 
 ---
 
-## Table of Contents
-
-1. [Project Structure](#project-structure)  
-2. [Prerequisites](#prerequisites)  
-3. [Clone the Repository](#clone-the-repository)  
-4. [Backend Setup](#backend-setup)  
-5. [Frontend Setup](#frontend-setup)  
-6. [Running in GitHub Codespaces](#running-in-github-codespaces)  
-7. [Optional: Local MongoDB](#optional-local-mongodb)  
-8. [Additional Commands](#additional-commands)  
-9. [Troubleshooting](#troubleshooting)  
-10. [References](#references)  
-
----
-
 ## Project Structure
 
 ```
@@ -97,23 +82,11 @@ MONGO_URI=your_mongodb_connection_string
 PORT=4000
 ```
 
-> Example MongoDB Atlas URI:
-
-```
-mongodb+srv://username:password@cluster0.abcd.mongodb.net/jobboard?retryWrites=true&w=majority
-```
 
 4. Run the backend:
 
 ```bash
 npm run dev
-```
-
-Expected output:
-
-```
-MongoDB connected
-Backend running on http://localhost:4000
 ```
 
 ---
@@ -159,7 +132,7 @@ nvm alias default 20
 ```
 
 3. Follow **backend** and **frontend** setup steps.
-4. In Codespaces, open the **Ports tab** and make ports **5000 (backend)** and **5173 (frontend)** public.
+4. In Codespaces, open the **Ports tab** and make ports **4000 (backend)** and **5173 (frontend)** public.
 5. Open the links in browser → your JobBoard app will be live.
 
 ---
