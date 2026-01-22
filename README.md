@@ -1,6 +1,4 @@
-Absolutely! I can make a **single, comprehensive README file** that covers **everything**—frontend, backend, MongoDB, Codespaces, local setup, troubleshooting—so it’s **all in one place**. Here’s the full ready-to-use README:
 
----
 
 ```markdown
 # JobBoard Project
@@ -92,7 +90,7 @@ npm install
 touch .env
 ```
 
-Add the following variables (replace with your MongoDB credentials):
+Add the following variables :
 
 ```
 MONGO_URI=your_mongodb_connection_string
