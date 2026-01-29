@@ -28,37 +28,22 @@ export interface PaginatedJobsResponse {
 /* ===================== JOB SERVICE ===================== */
 
 export const jobService = {
-  getJobs: async (
-    page: number = 1,
-    limit: number = 10
-  ): Promise<PaginatedJobsResponse> => {
-    const res = await apiClient.get('/api/jobs', {
-      params: { page, limit },
-    });
+  getJobs: async (page = 1, limit = 10) => {
+    const res = await apiClient.get('/api/jobs', { params: { page, limit } });
     return res.data;
   },
 
-  createJob: async (title: string, description: string): Promise<Job> => {
-    const res = await apiClient.post('/api/jobs', {
-      title,
-      description,
-    });
+  createJob: async (title: string, description: string) => {
+    const res = await apiClient.post('/api/jobs', { title, description });
     return res.data;
   },
 
-  updateJob: async (
-    id: string,
-    title: string,
-    description: string
-  ): Promise<Job> => {
-    const res = await apiClient.put(`/api/jobs/${id}`, {
-      title,
-      description,
-    });
+  updateJob: async (id: string, title: string, description: string) => {
+    const res = await apiClient.put(`/api/jobs/${id}`, { title, description });
     return res.data;
   },
 
-  deleteJob: async (id: string): Promise<void> => {
+  deleteJob: async (id: string) => {
     await apiClient.delete(`/api/jobs/${id}`);
   },
 };
