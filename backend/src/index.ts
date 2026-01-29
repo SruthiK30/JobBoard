@@ -11,9 +11,11 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware
 app.use(cors({
-  origin: '*',
+  origin: [
+    'http://localhost:5173',
+    'https://job-board.vercel.app'
+  ],
   credentials: true,
 }));
 
@@ -42,13 +44,16 @@ app.get('/api/auth/role', (req: Request, res: Response) => {
   res.json({ role: req.cookies.role || null });
 });
 
-// Protected routes
-app.use('/api', authMiddleware, jobRoutes);
+// ✅ PUBLIC jobs
+app.use('/api/jobs', jobRoutes);
+
+// ✅ PROTECTED routes
+app.use('/api', authMiddleware);
 
 // Start server
 async function start() {
   try {
-    await Database.connect(); // ✅ ENV ONLY
+    await Database.connect();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
