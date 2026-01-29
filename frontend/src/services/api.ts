@@ -34,7 +34,7 @@ export const jobService = {
     page: number = 1,
     limit: number = 10
   ): Promise<PaginatedJobsResponse> => {
-    const res = await apiClient.get('/jobs', { params: { page, limit } });
+    const res = await apiClient.get('/api/jobs', { params: { page, limit } });
     return res.data;
   },
 
