@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -9,40 +9,19 @@ import jobRoutes from './presentation/routes';
 dotenv.config();
 
 const app = express();
-const allowedOrigin = 'https://job-board-lac-seven.vercel.app';
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', allowedOrigin);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  res.header(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, OPTIONS'
-  );
-
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
-
 const PORT = process.env.PORT || 4000;
 
+/* ================= CORS ================= */
+app.use(cors({
+  origin: 'https://job-board-lac-seven.vercel.app',
+  credentials: true,
+}));
 
-/* =======================
-   ✅ Middlewares
-   ======================= */
 app.use(express.json());
 app.use(cookieParser());
 
-/* =======================
-   🔐 AUTH ROUTES
-   ======================= */
-app.post('/api/auth/set-role', (req: Request, res: Response) => {
+/* ================= AUTH ================= */
+app.post('/api/auth/set-role', (req, res) => {
   const { role } = req.body;
 
   if (!['user', 'admin'].includes(role)) {
@@ -51,54 +30,28 @@ app.post('/api/auth/set-role', (req: Request, res: Response) => {
 
   res.cookie('role', role, {
     httpOnly: true,
-    secure: true,        // REQUIRED for HTTPS
-    sameSite: 'none',    // REQUIRED for cross-site
+    secure: true,      // ✅ MUST be true on HTTPS
+    sameSite: 'none',  // ✅ MUST be none for Vercel ↔ Render
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  res.json({ message: 'Role set successfully', role });
+  res.json({ message: 'Role set', role });
 });
 
-app.get('/api/auth/role', (req: Request, res: Response) => {
+app.get('/api/auth/role', (req, res) => {
   res.json({ role: req.cookies.role || null });
 });
 
-/* =======================
-   📦 PUBLIC ROUTES
-   ======================= */
-app.use('/api/jobs', jobRoutes);
+/* ================= ROUTES ================= */
+app.use('/api/jobs', jobRoutes);        // public
+app.use('/api', authMiddleware);        // protected
 
-/* =======================
-   🔒 PROTECTED ROUTES
-   ======================= */
-app.use('/api', authMiddleware);
-// 🔒 ADMIN ONLY ROUTE
-app.get('/api/admin/jobs', (req: Request, res: Response) => {
-  const role = req.cookies.role;
-
-  if (role !== 'admin') {
-    return res.status(403).json({ error: 'Forbidden: Admins only' });
-  }
-
-  res.json({
-    message: 'Welcome Admin 🎉',
-    secretData: ['job1', 'job2', 'job3'],
-  });
-});
-
-/* =======================
-   🚀 START SERVER
-   ======================= */
+/* ================= START ================= */
 async function start() {
-  try {
-    await Database.connect();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
+  await Database.connect();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }
 
 start();
