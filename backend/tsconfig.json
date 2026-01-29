@@ -9,15 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-
-    "types": [
-      "node",
-      "express",
-      "uuid",
-      "cors",
-      "cookie-parser"
-    ]
+    "resolveJsonModule": true
   },
 
   "include": [
