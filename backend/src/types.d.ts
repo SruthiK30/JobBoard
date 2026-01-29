@@ -1,13 +1,11 @@
-import { Request } from "express";
+import { Role } from "./domain/Job";
 
-declare module 'cors';
-declare module 'cookie-parser';
-
-// Extend Express Request so TypeScript stops throwing errors
-export interface AuthenticatedRequest extends Request {
-    user?: any;
-    body?: any;
-    params?: any;
-    query?: any;
-    cookies?: any;
+declare module "express-serve-static-core" {
+  interface Request {
+    userId?: string;
+    role?: Role;
+  }
 }
+
+declare module "cors";
+declare module "cookie-parser";
