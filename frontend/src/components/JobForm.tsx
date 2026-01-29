@@ -24,7 +24,7 @@ export function JobForm({ job, onSubmit, onCancel, loading = false }: JobFormPro
       newErrors.description = 'Description is required';
     }
 
-    if (description.trim().length < 10) {
+    if (description.trim().length < 5) {
       newErrors.description = 'Description must be at least 10 characters';
     }
 

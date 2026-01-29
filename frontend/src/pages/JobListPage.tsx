@@ -11,7 +11,7 @@ interface JobListProps {
 
 export function JobList({ role, onLogout }: JobListProps) {
   const { jobs, page, total, hasMore, loading, error, fetchJobs, loadMore, refresh } =
-    useJobs(1, 10);
+    useJobs(1, 3);
   const { loading: mutating, error: mutationError, createJob, updateJob, deleteJob } =
     useJobMutations();
   const [editingJob, setEditingJob] = useState<Job | null>(null);

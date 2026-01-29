@@ -18,7 +18,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// ================= AUTH =================
 app.post('/api/auth/set-role', (req, res) => {
   const { role } = req.body;
 
@@ -40,11 +39,9 @@ app.get('/api/auth/role', (req, res) => {
   res.json({ role: req.cookies.role || null });
 });
 
-// ================= JOB ROUTES =================
 console.log('✅ Mounting /api/jobs routes');
 app.use('/api/jobs', jobRoutes);
 
-// ================= START SERVER =================
 async function start() {
   try {
     await Database.connect();
