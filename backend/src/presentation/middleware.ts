@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Role } from '../domain/Job';
 
-export interface AuthenticatedRequest extends Request {
-  role?: Role;
-  userId?: string;
-}
-
 export function authMiddleware(
   req: AuthenticatedRequest,
   res: Response,
