@@ -4,7 +4,6 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Database } from './infrastructure/Database';
 import jobRoutes from './presentation/routes';
-
 dotenv.config();
 
 const app = express();
@@ -55,3 +54,5 @@ async function start() {
 }
 
 start();
+
+
