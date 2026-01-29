@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import { JobRepository } from '../infrastructure/JobRepository';
 import {
   CreateJobUseCase,
@@ -19,7 +19,7 @@ const updateJobUseCase = new UpdateJobUseCase(repository);
 const deleteJobUseCase = new DeleteJobUseCase(repository);
 
 // GET /api/jobs - Get all jobs with pagination
-router.get('/jobs', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/jobs', async (req: Request, res: Response) => {
   try {
     const page = Math.max(1, parseInt(req.query.page as string) || 1);
     const limit = Math.min(
@@ -42,7 +42,7 @@ router.get('/jobs', async (req: AuthenticatedRequest, res: Response) => {
 });
 
 // GET /api/jobs/:id - Get a single job
-router.get('/jobs/:id', async (req: AuthenticatedRequest, res: Response) => {
+router.get('/jobs/:id', async (req: Request, res: Response) => {
   try {
     const job = await getJobUseCase.execute(req.params.id);
 
@@ -62,7 +62,7 @@ router.get('/jobs/:id', async (req: AuthenticatedRequest, res: Response) => {
 router.post(
   '/jobs',
   adminMiddleware,
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     try {
       const { title, description } = req.body;
 
@@ -89,7 +89,7 @@ router.post(
 router.put(
   '/jobs/:id',
   adminMiddleware,
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     try {
       const { title, description } = req.body;
 
@@ -121,7 +121,7 @@ router.put(
 router.delete(
   '/jobs/:id',
   adminMiddleware,
-  async (req: AuthenticatedRequest, res: Response) => {
+  async (req: Request, res: Response) => {
     try {
       const success = await deleteJobUseCase.execute(req.params.id);
 

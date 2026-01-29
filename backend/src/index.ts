@@ -14,9 +14,10 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/job-bo
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: '*',
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 

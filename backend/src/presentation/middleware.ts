@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Role } from '../domain/Job';
 
 export function authMiddleware(
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void {
@@ -20,7 +20,7 @@ export function authMiddleware(
 }
 
 export function adminMiddleware(
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ): void {
