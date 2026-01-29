@@ -41,6 +41,7 @@ app.get('/api/auth/role', (req, res) => {
 });
 
 // ================= JOB ROUTES =================
+console.log('✅ Mounting /api/jobs routes');
 app.use('/api/jobs', jobRoutes);
 
 // ================= START SERVER =================
