@@ -3,7 +3,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Database } from './infrastructure/Database';
-import { authMiddleware } from './presentation/middleware';
 import jobRoutes from './presentation/routes';
 
 dotenv.config();
@@ -11,7 +10,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-/* ================= CORS ================= */
 app.use(cors({
   origin: 'https://job-board-lac-seven.vercel.app',
   credentials: true,
@@ -20,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-/* ================= AUTH ================= */
+// AUTH
 app.post('/api/auth/set-role', (req, res) => {
   const { role } = req.body;
 
@@ -30,8 +28,8 @@ app.post('/api/auth/set-role', (req, res) => {
 
   res.cookie('role', role, {
     httpOnly: true,
-    secure: true,      // ✅ MUST be true on HTTPS
-    sameSite: 'none',  // ✅ MUST be none for Vercel ↔ Render
+    secure: true,
+    sameSite: 'none',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
@@ -42,16 +40,18 @@ app.get('/api/auth/role', (req, res) => {
   res.json({ role: req.cookies.role || null });
 });
 
-/* ================= ROUTES ================= */
-app.use('/api/jobs', jobRoutes);        // public
-app.use('/api', authMiddleware);        // protected
+// ✅ JOB ROUTES (PUBLIC FOR DEMO)
+app.use('/api/jobs', jobRoutes);
 
-/* ================= START ================= */
 async function start() {
-  await Database.connect();
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+  try {
+    await Database.connect();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 start();
