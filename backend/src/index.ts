@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import { Database } from './infrastructure/Database';
 import jobRoutes from './presentation/routes';
+
 dotenv.config();
 
 const app = express();
@@ -17,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// AUTH
+// ===== AUTH =====
 app.post('/api/auth/set-role', (req, res) => {
   const { role } = req.body;
 
@@ -39,9 +40,10 @@ app.get('/api/auth/role', (req, res) => {
   res.json({ role: req.cookies.role || null });
 });
 
-// ✅ JOB ROUTES (PUBLIC FOR DEMO)
+// ===== JOB ROUTES =====
 app.use('/api/jobs', jobRoutes);
 
+// ===== START SERVER =====
 async function start() {
   try {
     await Database.connect();
@@ -50,9 +52,8 @@ async function start() {
     });
   } catch (err) {
     console.error(err);
+    process.exit(1);
   }
 }
 
 start();
-
-
