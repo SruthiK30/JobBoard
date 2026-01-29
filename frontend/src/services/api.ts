@@ -1,3 +1,14 @@
+import axios from 'axios';
+
+const API_BASE = import.meta.env.VITE_API_URL;
+
+const apiClient = axios.create({
+  baseURL: API_BASE,
+  withCredentials: true,
+});
+
+/* ===================== TYPES ===================== */
+
 export interface Job {
   id: string;
   title: string;
@@ -7,3 +18,41 @@ export interface Job {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface PaginatedJobsResponse {
+  data: Job[];
+  page: number;
+  limit: number;
+  total: number;
+  hasMore: boolean;
+}
+
+/* ===================== SERVICES ===================== */
+
+export const jobService = {
+  getJobs: async (
+    page: number = 1,
+    limit: number = 10
+  ): Promise<PaginatedJobsResponse> => {
+    const res = await apiClient.get('/jobs', {
+      params: { page, limit },
+    });
+    return res.data;
+  },
+
+  createJob: async (title: string, description: string): Promise<Job> => {
+    const res = await apiClient.post('/jobs', { title, description });
+    return res.data;
+  },
+};
+
+export const authService = {
+  setRole: async (role: 'user' | 'admin') => {
+    await apiClient.post('/auth/set-role', { role });
+  },
+
+  getRole: async (): Promise<string | null> => {
+    const res = await apiClient.get('/auth/role');
+    return res.data.role;
+  },
+};
