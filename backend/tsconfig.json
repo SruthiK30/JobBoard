@@ -10,10 +10,23 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true
+
+    "types": [
+      "node",
+      "express",
+      "uuid",
+      "cors",
+      "cookie-parser"
+    ]
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+
+  "include": [
+    "src/**/*.ts",
+    "src/types.d.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
