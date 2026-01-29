@@ -24,10 +24,10 @@ export interface PaginatedJobsResponse {
   page: number;
   limit: number;
   total: number;
-  hasMore: boolean;
+  hasMore:_tf boolean;
 }
 
-/* ===================== SERVICES ===================== */
+/* ===================== JOB SERVICE ===================== */
 
 export const jobService = {
   getJobs: async (
@@ -40,14 +40,35 @@ export const jobService = {
     return res.data;
   },
 
-  createJob: async (title: string, description: string): Promise<Job> => {
+  createJob: async (
+    title: string,
+    description: string
+  ): Promise<Job> => {
     const res = await apiClient.post('/jobs', { title, description });
     return res.data;
   },
+
+  updateJob: async (
+    id: string,
+    title: string,
+    description: string
+  ): Promise<Job> => {
+    const res = await apiClient.put(`/jobs/${id}`, {
+      title,
+      description,
+    });
+    return res.data;
+  },
+
+  deleteJob: async (id: string): Promise<void> => {
+    await apiClient.delete(`/jobs/${id}`);
+  },
 };
 
+/* ===================== AUTH SERVICE ===================== */
+
 export const authService = {
-  setRole: async (role: 'user' | 'admin') => {
+  setRole: async (role: 'user' | 'admin'): Promise<void> => {
     await apiClient.post('/auth/set-role', { role });
   },
 
