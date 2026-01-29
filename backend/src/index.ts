@@ -8,7 +8,7 @@ import jobRoutes from './presentation/routes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 10000;
 
 app.use(cors({
   origin: 'https://job-board-lac-seven.vercel.app',
@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// ===== AUTH =====
+// ================= AUTH =================
 app.post('/api/auth/set-role', (req, res) => {
   const { role } = req.body;
 
@@ -40,10 +40,10 @@ app.get('/api/auth/role', (req, res) => {
   res.json({ role: req.cookies.role || null });
 });
 
-// ===== JOB ROUTES =====
+// ================= JOB ROUTES =================
 app.use('/api/jobs', jobRoutes);
 
-// ===== START SERVER =====
+// ================= START SERVER =================
 async function start() {
   try {
     await Database.connect();
@@ -52,7 +52,6 @@ async function start() {
     });
   } catch (err) {
     console.error(err);
-    process.exit(1);
   }
 }
 
