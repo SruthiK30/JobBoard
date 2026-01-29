@@ -28,7 +28,7 @@ export interface PaginatedJobsResponse {
 /* ===================== JOB SERVICE ===================== */
 
 export const jobService = {
-  getJobs: async (page = 1, limit = 14) => {
+  getJobs: async (page = 1, limit = 4) => {
     const res = await apiClient.get('/api/jobs', { params: { page, limit } });
     return res.data;
   },
