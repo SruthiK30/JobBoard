@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-//const API_BASE = import.meta.env.VITE_API_URL;
-
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
@@ -24,22 +22,27 @@ export interface PaginatedJobsResponse {
   page: number;
   limit: number;
   total: number;
-  hasMore: boolean;   // ✅ FIXED
+  hasMore: boolean;
 }
 
-/* ===================== SERVICES ===================== */
+/* ===================== JOB SERVICE ===================== */
 
 export const jobService = {
   getJobs: async (
     page: number = 1,
     limit: number = 10
   ): Promise<PaginatedJobsResponse> => {
-    const res = await apiClient.get('/api/jobs', { params: { page, limit } });
+    const res = await apiClient.get('/api/jobs', {
+      params: { page, limit },
+    });
     return res.data;
   },
 
   createJob: async (title: string, description: string): Promise<Job> => {
-    const res = await apiClient.post('/jobs', { title, description });
+    const res = await apiClient.post('/api/jobs', {
+      title,
+      description,
+    });
     return res.data;
   },
 
@@ -48,7 +51,7 @@ export const jobService = {
     title: string,
     description: string
   ): Promise<Job> => {
-    const res = await apiClient.put(`/jobs/${id}`, {
+    const res = await apiClient.put(`/api/jobs/${id}`, {
       title,
       description,
     });
@@ -56,9 +59,12 @@ export const jobService = {
   },
 
   deleteJob: async (id: string): Promise<void> => {
-    await apiClient.delete(`/jobs/${id}`);
+    await apiClient.delete(`/api/jobs/${id}`);
   },
 };
+
+/* ===================== AUTH SERVICE ===================== */
+
 export const authService = {
   setRole: async (role: 'user' | 'admin') => {
     await apiClient.post('/api/auth/set-role', { role });
@@ -69,5 +75,3 @@ export const authService = {
     return res.data.role;
   },
 };
-
-
