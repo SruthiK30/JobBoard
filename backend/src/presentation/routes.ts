@@ -7,7 +7,7 @@ import {
   UpdateJobUseCase,
   DeleteJobUseCase,
 } from '../application/JobUseCases';
-import { AuthenticatedRequest, adminMiddleware } from './middleware';
+import { adminMiddleware } from './middleware'; // ❗ Only adminMiddleware is imported now
 
 const router = Router();
 const repository = new JobRepository();
@@ -45,10 +45,12 @@ router.get('/jobs', async (req: AuthenticatedRequest, res: Response) => {
 router.get('/jobs/:id', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const job = await getJobUseCase.execute(req.params.id);
+
     if (!job) {
       res.status(404).json({ error: 'Job not found' });
       return;
     }
+
     res.json(job.toPrimitives());
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
@@ -65,9 +67,7 @@ router.post(
       const { title, description } = req.body;
 
       if (!title || !description) {
-        res
-          .status(400)
-          .json({ error: 'Title and description are required' });
+        res.status(400).json({ error: 'Title and description are required' });
         return;
       }
 
@@ -94,9 +94,7 @@ router.put(
       const { title, description } = req.body;
 
       if (!title || !description) {
-        res
-          .status(400)
-          .json({ error: 'Title and description are required' });
+        res.status(400).json({ error: 'Title and description are required' });
         return;
       }
 
