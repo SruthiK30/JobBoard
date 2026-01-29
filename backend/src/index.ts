@@ -72,6 +72,19 @@ app.use('/api/jobs', jobRoutes);
    🔒 PROTECTED ROUTES
    ======================= */
 app.use('/api', authMiddleware);
+// 🔒 ADMIN ONLY ROUTE
+app.get('/api/admin/jobs', (req: Request, res: Response) => {
+  const role = req.cookies.role;
+
+  if (role !== 'admin') {
+    return res.status(403).json({ error: 'Forbidden: Admins only' });
+  }
+
+  res.json({
+    message: 'Welcome Admin 🎉',
+    secretData: ['job1', 'job2', 'job3'],
+  });
+});
 
 /* =======================
    🚀 START SERVER
