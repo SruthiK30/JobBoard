@@ -11,18 +11,14 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://job-board.vercel.app'
-  ],
+
+app.use(cors({  origin: 'https://job-board-lac-seven.vercel.app',
   credentials: true,
 }));
 
 app.use(express.json());
 app.use(cookieParser());
-
-// Auth routes
+// 🔐 SET ROLE
 app.post('/api/auth/set-role', (req: Request, res: Response) => {
   const { role } = req.body;
 
@@ -32,35 +28,10 @@ app.post('/api/auth/set-role', (req: Request, res: Response) => {
 
   res.cookie('role', role, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: true,        // ✅ REQUIRED for Vercel
+    sameSite: 'none',    // ✅ REQUIRED for cross-site
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.json({ message: 'Role set successfully', role });
 });
-
-app.get('/api/auth/role', (req: Request, res: Response) => {
-  res.json({ role: req.cookies.role || null });
-});
-
-// ✅ PUBLIC jobs
-app.use('/api/jobs', jobRoutes);
-
-// ✅ PROTECTED routes
-app.use('/api', authMiddleware);
-
-// Start server
-async function start() {
-  try {
-    await Database.connect();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
-}
-
-start();
